@@ -1,13 +1,14 @@
 {
   "name": "library-checker",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "main.js",
   "license": "MIT",
   "private": true,
   "author": "Tony Yip",
   "scripts": {
     "dev": "electron src/main",
     "build": "node build/build",
+    "build:main": "webpack --config config/webpack.main.conf.js",
     "package:osx": "electron-packager --out=output/osx --platform=darwin --arch=x64 --icon=build/assets/icon/icon.icns --app-bundle-id hk.edu.pyc.library.checker dist",
     "package:win": "electron-packager --out=output/win32 --platform=win32 --arch=ia32 --icon=build/assets/icon/icon.ico --win32metadata.CompanyName=\"SPYC\" --win32metadata.ProductName=\"SPYC Library Checker\" --win32metadata.requested-execution-level=\"user\" dist",
     "package:linux-amd64": "electron-packager --out=output/linux --platform=linux --arch=x64 --icon=build/assets/icon/icon.png dist",
@@ -41,7 +42,8 @@
     "webpack": "^4.6.0",
     "webpack-dev-middleware": "^3.1.2",
     "webpack-hot-middleware": "^2.22.1",
-    "webpack-merge": "^4.1.2"
+    "webpack-merge": "^4.1.2",
+    "webpack-node-externals": "^1.7.2"
   },
   "electronWebpack": {
     "title": "SPYC Library Check-In System",

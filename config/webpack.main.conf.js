@@ -1,17 +1,12 @@
+const nodeExternals = require('webpack-node-externals');
+
 module.exports = {
   mode: 'production',
   devtool: '#source-map',
   entry: {
     main: './src/main/index.js',
   },
-  externals: [
-    'source-map-support',
-    'electron',
-    'webpack',
-    'electron-devtools-installer',
-    'webpack/hot/log-apply-result',
-    'source-map-support/source-map-support.js',
-  ],
+  externals: [nodeExternals()],
   output: {
     filename: '[name].js',
     chunkFilename: '[id].bundle.js',
