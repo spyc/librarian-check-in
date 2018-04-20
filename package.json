@@ -1,0 +1,50 @@
+{
+  "name": "library-checker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "author": "Tony Yip",
+  "scripts": {
+    "dev": "electron-webpack dev",
+    "build": "node build/build",
+    "package:osx": "electron-packager --out=output/osx --platform=darwin --arch=x64 --icon=build/assets/icon/icon.icns --app-bundle-id hk.edu.pyc.library.checker dist",
+    "package:win": "electron-packager --out=output/win32 --platform=win32 --arch=ia32 --icon=build/assets/icon/icon.ico --win32metadata.CompanyName=\"SPYC\" --win32metadata.ProductName=\"SPYC Library Checker\" --win32metadata.requested-execution-level=\"user\" dist",
+    "package:linux-amd64": "electron-packager --out=output/linux --platform=linux --arch=x64 --icon=build/assets/icon/icon.png dist",
+    "package:linux-i386": "electron-packager --out=output/linux --platform=linux --arch=ia32 --icon=build/assets/icon/icon.png dist"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "css-loader": "^0.28.11",
+    "electron": "^1.8.4",
+    "electron-packager": "^12.0.1",
+    "electron-webpack": "^2.0.1",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-loader": "^2.0.0",
+    "eslint-plugin-import": "^2.11.0",
+    "friendly-errors-webpack-plugin": "^1.7.0",
+    "mini-css-extract-plugin": "^0.4.0",
+    "optimize-css-assets-webpack-plugin": "^4.0.0",
+    "style-loader": "^0.21.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "uglifyjs-webpack-plugin": "^1.2.5",
+    "webpack": "^4.6.0",
+    "webpack-dev-middleware": "^3.1.2",
+    "webpack-hot-middleware": "^2.22.1",
+    "webpack-merge": "^4.1.2"
+  },
+  "electronWebpack": {
+    "title": "SPYC Library Check-In System",
+    "renderer": {
+      "sourceDirectory": "src/renderer"
+    }
+  },
+  "dependencies": {
+    "source-map-support": "^0.5.4"
+  }
+}
