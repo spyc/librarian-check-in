@@ -8,6 +8,7 @@ const mainConfig = require('../config/webpack.main.conf');
 shell.rm('-rf', 'dist');
 
 shell.cp('-r', 'build/assets', 'dist');
+shell.cp('yarn.lock', 'dist');
 shell.cp('package.json', 'dist');
 
 ejs.renderFile('views/index.ejs', { production: true }, (err, str) => {
