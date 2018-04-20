@@ -44,14 +44,12 @@ exports.cssLoaders = function (options) {
 };
 
 exports.styleLoaders = function (options) {
-  const output = [];
   const loaders = exports.cssLoaders(options);
-  for (const extension in loaders) {
+  return Object.keys(loaders).map((extension) => {
     const loader = loaders[extension];
-    output.push({
+    return {
       test: new RegExp(`\\.${extension}$`),
       use: loader,
-    });
-  }
-  return output;
+    };
+  });
 };
