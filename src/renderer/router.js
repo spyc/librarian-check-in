@@ -6,7 +6,8 @@ Vue.use(VueRouter);
 export default function createRouter() {
   return new VueRouter({
     routes: [
-      { name: 'record', path: '/', component: () => import('./page/Record.vue') },
+      { name: 'home', path: '/', component: () => import('./page/Home.vue') },
+      { name: 'record', path: '/record', component: () => import('./page/Record.vue') },
     ],
   });
 }
