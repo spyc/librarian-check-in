@@ -6,14 +6,15 @@
   "private": true,
   "author": "Tony Yip",
   "scripts": {
-    "dev": "nodemon --exec electron --watch src/main src/main",
+    "dev": "node build/dev",
+    "dev:main": "nodemon --exec electron --watch src/main/index.js src/main",
     "build": "node build/build",
     "build:main": "webpack --config config/webpack.main.conf.js",
     "package:osx": "electron-packager --out=output/osx --platform=darwin --arch=x64 --icon=build/assets/icon/icon.icns --app-bundle-id hk.edu.pyc.library.checker dist",
     "package:win": "electron-packager --out=output/win32 --platform=win32 --arch=ia32 --icon=build/assets/icon/icon.ico --win32metadata.CompanyName=\"SPYC\" --win32metadata.ProductName=\"SPYC Library Checker\" --win32metadata.requested-execution-level=\"user\" dist",
     "package:linux-amd64": "electron-packager --out=output/linux --platform=linux --arch=x64 --icon=build/assets/icon/icon.png dist",
     "package:linux-i386": "electron-packager --out=output/linux --platform=linux --arch=ia32 --icon=build/assets/icon/icon.png dist",
-    "lint": "eslint ."
+    "lint": "eslint --ext vue,js ."
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

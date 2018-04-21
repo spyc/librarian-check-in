@@ -1,7 +1,7 @@
 const express = require('express');
 const webpack = require('webpack');
 const serveStatic = require('serve-static');
-const devConfig = require('../../config/webpack.dev.conf');
+const devConfig = require('../config/webpack.dev.conf');
 
 const app = express();
 

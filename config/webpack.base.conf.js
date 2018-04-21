@@ -5,12 +5,6 @@ module.exports = {
     renderer: './src/renderer/index.js',
   },
   devtool: '#source-map',
-  externals: [
-    'source-map-support',
-    'electron',
-    'webpack',
-    'electron-devtools-installer',
-  ],
   output: {
     filename: '[name].js',
     path: `${__dirname}/../dist`,

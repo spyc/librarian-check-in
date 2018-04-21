@@ -4,16 +4,11 @@ const path = require('path');
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
-if (isDevelopment) {
-  // eslint-disable-next-line global-require
-  require('./dev-server');
-}
-
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow;
 
 function createMainWindow() {
-  const window = new BrowserWindow();
+  const window = new BrowserWindow({ width: 960, height: 720 });
 
   if (isDevelopment) {
     window.loadURL('http://localhost:8080');
