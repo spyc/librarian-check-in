@@ -29,7 +29,7 @@ exports.cssLoaders = function (options) {
     if (options.extract) {
       return [MiniCssExtractPlugin.loader].concat(loaders);
     }
-    return ['style-loader'].concat(loaders);
+    return ['vue-style-loader'].concat(loaders);
   }
 
   return {

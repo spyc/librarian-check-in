@@ -1,3 +1,5 @@
+const vueConf = require('./vue-loader.conf');
+
 module.exports = {
   entry: {
     renderer: './src/renderer/index.js',
@@ -17,7 +19,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|vue)$/,
         loader: 'eslint-loader',
         enforce: 'pre',
         options: {
@@ -26,8 +28,14 @@ module.exports = {
         },
       },
       {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: vueConf,
+      },
+      {
         test: /\.js$/,
         loader: 'babel-loader',
+        exclude: /node_modules/,
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
