@@ -16,10 +16,6 @@ function createMainWindow() {
   const window = new BrowserWindow();
 
   if (isDevelopment) {
-    window.webContents.openDevTools();
-  }
-
-  if (isDevelopment) {
     window.loadURL('http://localhost:8080');
   } else {
     window.loadURL(format({
@@ -31,13 +27,6 @@ function createMainWindow() {
 
   window.on('closed', () => {
     mainWindow = null;
-  });
-
-  window.webContents.on('devtools-opened', () => {
-    window.focus();
-    setImmediate(() => {
-      window.focus();
-    });
   });
 
   return window;
@@ -63,5 +52,6 @@ app.on('ready', () => {
   mainWindow = createMainWindow();
   if (isDevelopment) {
     BrowserWindow.addDevToolsExtension('./data/VueDevTools');
+    mainWindow.webContents.openDevTools();
   }
 });

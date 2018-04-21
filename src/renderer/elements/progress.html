@@ -1,0 +1,91 @@
+<template id="progress">
+    <style>
+        .progress-circular {
+            height: 70px;
+            width: 70px;
+            margin: 1rem;
+            position: relative;
+            display: inline-flex;
+            color: #1a9eed;
+        }
+        svg {
+            transform: rotate(0deg);
+            animation: progress-circular-rotate 1.4s linear infinite;
+            transform-origin: center center;
+            transition: all .2s ease-in-out;
+            width: 100%;
+            height: 100%;
+            margin: auto;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .progress-circular--indeterminate .progress-circular__overlay {
+            animation: progress-circular-dash 1.4s ease-in-out infinite;
+            stroke-linecap: round;
+            stroke-dasharray: 80,200;
+            stroke-dashoffset: 0;
+            stroke: currentColor;
+            z-index: 2;
+            transition: all .6s ease-in-out;
+        }
+
+        @keyframes progress-circular-dash {
+            0% {
+                stroke-dasharray: 1,200;
+                stroke-dashoffset: 0px;
+            }
+
+            50% {
+                stroke-dasharray: 100,200;
+                stroke-dashoffset: -15px;
+            }
+
+            100% {
+                stroke-dasharray: 100, 200;
+                stroke-dashoffset: -125px;
+            }
+        }
+
+        @keyframes progress-circular-rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <div class="progress-circular progress-circular--indeterminate">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="22.22222222222222 22.22222222222222 44.44444444444444 44.44444444444444">
+            <circle fill="transparent" cx="44.44444444444444" cy="44.44444444444444" r="20" stroke-width="4.444444444444445" stroke-dasharray="125.664" stroke-dashoffset="125.66370614359172px" class="progress-circular__overlay"></circle>
+        </svg>
+    </div>
+</template>
+<script>
+  // eslint-disable-next-line wrap-iife
+  (function () {
+    /* globals document, HTMLElement, customElements */
+    const importDoc = document.currentScript.ownerDocument;
+
+    class ProgressCircle extends HTMLElement {
+      connectedCallback() {
+        this.render();
+      }
+
+      attributeChangedCallback() {
+        this.render();
+      }
+
+      render() {
+        const template = importDoc.querySelector('template#progress');
+        const node = importDoc.importNode(template.content, true);
+        const root = this.attachShadow({ mode: 'open' });
+        root.appendChild(node);
+      }
+    }
+    customElements.define('progress-circle', ProgressCircle);
+  })();
+</script>

@@ -25,6 +25,7 @@ app.get('/', (req, res) => {
 });
 
 app.use(serveStatic('build/assets'));
+app.use('/elements', serveStatic('src/renderer/elements'));
 
 app.use(devMiddleware);
 app.use(hotMiddleware);
