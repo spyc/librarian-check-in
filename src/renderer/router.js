@@ -7,7 +7,8 @@ export default function createRouter() {
   return new VueRouter({
     routes: [
       { name: 'home', path: '/', component: () => import('./page/Home.vue') },
-      { name: 'record', path: '/record', component: () => import('./page/Record.vue') },
+      { name: 'checkout', path: '/checkout', component: () => import('./page/CheckOut.vue') },
+      { name: 'checkin', path: '/checkin', component: () => import('./page/CheckIn.vue') },
     ],
   });
 }
