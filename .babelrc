@@ -4,5 +4,8 @@
     "targets": {
       "chrome": "59"
     }
-  }]]
+  }]],
+  "plugins": [
+    "syntax-dynamic-import"
+  ]
 }
