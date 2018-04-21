@@ -9,6 +9,7 @@ export default function createRouter() {
       { name: 'home', path: '/', component: () => import('./page/Home.vue') },
       { name: 'checkout', path: '/checkout', component: () => import('./page/CheckOut.vue') },
       { name: 'checkin', path: '/checkin', component: () => import('./page/CheckIn.vue') },
+      { name: 'librarian', path: '/librarian', component: () => import('./page/librarian/Page.vue') },
     ],
   });
 }

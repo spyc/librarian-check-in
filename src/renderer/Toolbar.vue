@@ -15,9 +15,7 @@
             >
                 {{ page.display }}
             </v-btn>
-
-            <v-btn flat class="white--text">Personal Report</v-btn>
-            <v-btn flat class="white--text">Summary Report</v-btn>
+            <v-btn flat class="white--text">Report</v-btn>
         </v-toolbar-items>
     </v-toolbar>
 </template>
@@ -36,6 +34,7 @@
           pages: [
             { display: 'Check In', name: 'checkin' },
             { display: 'Check Out', name: 'checkout' },
+            { display: 'Librarian', name: 'librarian' },
           ],
         };
       },
