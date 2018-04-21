@@ -26,7 +26,6 @@
     "ejs": "^2.5.9",
     "electron": "^1.8.4",
     "electron-packager": "^12.0.1",
-    "electron-webpack": "^2.0.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-friendly-formatter": "^4.0.1",
@@ -52,12 +51,6 @@
     "webpack-hot-middleware": "^2.22.1",
     "webpack-merge": "^4.1.2",
     "webpack-node-externals": "^1.7.2"
-  },
-  "electronWebpack": {
-    "title": "SPYC Library Check-In System",
-    "renderer": {
-      "sourceDirectory": "src/renderer"
-    }
   },
   "dependencies": {
     "dotenv": "^5.0.1",
