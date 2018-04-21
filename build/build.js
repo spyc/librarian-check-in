@@ -2,6 +2,9 @@ const webpack = require('webpack');
 const shell = require('shelljs');
 const fs = require('fs');
 const ejs = require('ejs');
+
+process.env.NODE_ENV = 'production';
+
 const rendererConfig = require('../config/webpack.prod.conf');
 const mainConfig = require('../config/webpack.main.conf');
 
