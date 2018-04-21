@@ -61,4 +61,7 @@ app.on('activate', () => {
 // create main BrowserWindow when electron is ready
 app.on('ready', () => {
   mainWindow = createMainWindow();
+  if (isDevelopment) {
+    BrowserWindow.addDevToolsExtension('./data/VueDevTools');
+  }
 });
