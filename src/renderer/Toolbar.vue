@@ -15,7 +15,6 @@
             >
                 {{ page.display }}
             </v-btn>
-            <v-btn flat class="white--text">Report</v-btn>
         </v-toolbar-items>
     </v-toolbar>
 </template>
@@ -35,6 +34,7 @@
             { display: 'Check In', name: 'checkin' },
             { display: 'Check Out', name: 'checkout' },
             { display: 'Librarian', name: 'librarian' },
+            { display: 'Report', name: 'report' },
           ],
         };
       },
