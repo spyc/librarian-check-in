@@ -15,7 +15,7 @@
     "package:linux-amd64": "electron-packager --out=output/linux --platform=linux --arch=x64 --icon=build/assets/icon/icon.png dist",
     "package:linux-i386": "electron-packager --out=output/linux --platform=linux --arch=ia32 --icon=build/assets/icon/icon.png dist",
     "lint": "eslint --ext vue,js .",
-    "build:native": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
