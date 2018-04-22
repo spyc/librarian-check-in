@@ -19,8 +19,23 @@
                     :loading="loading"
                     :librarians="librarian"
                     @edit="edit"
+                    @remove="removeConfirm"
             ></list>
         </v-container>
+        <v-dialog v-model="confirm" max-width="290">
+            <v-card>
+                <v-card-title class="headline">Confirm to remove librarian?</v-card-title>
+                <v-card-text>
+                    Are you sure you want to remove {{ removeTarget.name }} ({{ removeTarget.class }}{{removeTarget.class_no}})?
+                    All the record related to {{ removeTarget.name }} will be removed.
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red darken-1" flat="flat" @click.native="remove">Remove</v-btn>
+                    <v-btn color="darken-1" flat="flat" @click.native="confirm = false">Cancel</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-content>
 </template>
 
@@ -38,6 +53,8 @@
         dialog: false,
         usage: 'add',
         body: {},
+        confirm: false,
+        removeTarget: {},
       };
     },
     computed: mapState(['librarian']),
@@ -55,6 +72,20 @@
         this.body = body;
         this.usage = 'edit';
         this.dialog = true;
+      },
+      removeConfirm(body) {
+        this.removeTarget = body;
+        this.confirm = true;
+      },
+      remove() {
+        const body = this.removeTarget;
+        const query = {
+          body,
+          action: 'remove',
+        };
+        console.debug('Remove', query);
+        this.$ipc.send('librarian.mutation', query);
+        this.confirm = false;
       },
       ...mapActions(['updateLibrarian']),
     },

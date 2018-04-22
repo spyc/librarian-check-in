@@ -20,7 +20,7 @@
                 <v-btn icon class="mx-0" @click="() => edit(props.item)">
                     <v-icon color="teal">edit</v-icon>
                 </v-btn>
-                <v-btn icon class="mx-0">
+                <v-btn icon class="mx-0" @click="() => remove(props.item)">
                     <v-icon color="pink">delete</v-icon>
                 </v-btn>
             </td>
@@ -57,6 +57,9 @@
     methods: {
       edit(item) {
         this.$emit('edit', item);
+      },
+      remove(item) {
+        this.$emit('remove', item);
       },
     },
   };

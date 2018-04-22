@@ -24,6 +24,19 @@ ipcMain.on('librarian.list', (event) => {
 ipcMain.on('librarian.mutation', (event, { action, body }) => {
   openDB()
     .then((db) => {
+      if (action === 'remove') {
+        const sql = 'DELETE FROM librarian WHERE id = ?';
+        return new Promise((resolve, reject) => {
+          db.run(sql, body.id, (err) => {
+            if (err) {
+              reject(err);
+            } else {
+              db.close();
+              resolve();
+            }
+          });
+        });
+      }
       const sql = (
         action === 'add' ?
           'INSERT INTO librarian (name, class, class_no, id) VALUES (?, ?, ?, ?)' :

@@ -182,7 +182,7 @@
             class: this.studentClass,
             class_no: this.classNo,
           };
-          console.log('Mutation', this.usage, body);
+          console.debug('Mutation', this.usage, body);
           this.$ipc.send('librarian.mutation', {
             body,
             action: this.usage,
