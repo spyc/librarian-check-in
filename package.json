@@ -14,17 +14,20 @@
     "package:win": "electron-packager --out=output/win32 --platform=win32 --arch=ia32 --icon=build/assets/icon/icon.ico --win32metadata.CompanyName=\"SPYC\" --win32metadata.ProductName=\"SPYC Library Checker\" --win32metadata.requested-execution-level=\"user\" dist",
     "package:linux-amd64": "electron-packager --out=output/linux --platform=linux --arch=x64 --icon=build/assets/icon/icon.png dist",
     "package:linux-i386": "electron-packager --out=output/linux --platform=linux --arch=ia32 --icon=build/assets/icon/icon.png dist",
-    "lint": "eslint --ext vue,js ."
+    "lint": "eslint --ext vue,js .",
+    "build:native": "electron-builder install-app-deps"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.4",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "css-loader": "^0.28.11",
     "ejs": "^2.5.9",
     "electron": "^1.8.4",
+    "electron-builder": "^20.10.0",
     "electron-packager": "^12.0.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",

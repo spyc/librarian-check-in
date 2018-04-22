@@ -6,6 +6,8 @@ import App from './App.vue';
 import createStore from './store';
 import createRouter from './router';
 
+import './plugins';
+
 Vue.use(Vuetify, {
   theme: {
     primary: '#1a9eed',

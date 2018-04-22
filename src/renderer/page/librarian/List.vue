@@ -11,6 +11,20 @@
                 No record found
             </v-alert>
         </template>
+        <template slot="items" slot-scope="props">
+            <td>{{ props.item.id }}</td>
+            <td>{{ props.item.name }}</td>
+            <td>{{ props.item.class }}</td>
+            <td>{{ props.item.class_no }}</td>
+            <td class="justify-center layout px-0">
+                <v-btn icon class="mx-0">
+                    <v-icon color="teal">edit</v-icon>
+                </v-btn>
+                <v-btn icon class="mx-0">
+                    <v-icon color="pink">delete</v-icon>
+                </v-btn>
+            </td>
+        </template>
     </v-data-table>
 </template>
 
@@ -24,6 +38,7 @@
           { text: 'Name', value: 'name' },
           { text: 'Class', value: 'class' },
           { text: 'Class No.', value: 'class_no' },
+          { text: 'Actions', value: 'action', sortable: false },
         ],
       };
     },

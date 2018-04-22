@@ -2,6 +2,8 @@ const { app, BrowserWindow } = require('electron');
 const { format } = require('url');
 const path = require('path');
 
+require('./ipc');
+
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
