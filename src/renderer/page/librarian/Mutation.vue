@@ -123,13 +123,9 @@
       },
     },
     watch: {
-      body(newVal, oldVal) {
-        if (
-          oldVal.id === newVal.id &&
-          oldVal.name === newVal.name &&
-          oldVal.class === newVal.class &&
-          oldVal.class_no === newVal.class_no
-        ) {
+      body(newVal) {
+        console.log('Body Change');
+        if (!newVal) {
           return;
         }
         this.id = newVal.id;
@@ -186,8 +182,11 @@
             class: this.studentClass,
             class_no: this.classNo,
           };
-          console.log('Mutation', body);
-          this.$ipc.send('librarian.mutation', body);
+          console.log('Mutation', this.usage, body);
+          this.$ipc.send('librarian.mutation', {
+            body,
+            action: this.usage,
+          });
         } else {
           this.message = 'Incorrect form';
           this.snackbar = true;

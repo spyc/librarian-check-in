@@ -21,12 +21,16 @@ ipcMain.on('librarian.list', (event) => {
     });
 });
 
-ipcMain.on('librarian.add', (event, arg) => {
+ipcMain.on('librarian.mutation', (event, { action, body }) => {
   openDB()
     .then((db) => {
-      const sql = 'INSERT INTO librarian (id, name, class, class_no) VALUES (?, ?, ?, ?)';
+      const sql = (
+        action === 'add' ?
+          'INSERT INTO librarian (name, class, class_no, id) VALUES (?, ?, ?, ?)' :
+          'UPDATE librarian SET name = ?, class = ?, class_no = ? WHERE id = ?'
+      );
       return new Promise((resolve, reject) => {
-        db.run(sql, arg.id, arg.name, arg.class, arg.class_no, (err) => {
+        db.run(sql, body.name, body.class, body.class_no, body.id, (err) => {
           if (err) {
             reject(err);
           } else {
@@ -37,10 +41,10 @@ ipcMain.on('librarian.add', (event, arg) => {
       });
     })
     .then(() => {
-      event.sender.send('librarian.add.reply', { done: true, error: null });
+      event.sender.send('librarian.mutation.reply', { done: true, error: null });
     })
     .catch((e) => {
       console.error(e);
-      event.sender.send('librarian.add.reply', { done: false, error: e });
+      event.sender.send('librarian.mutation.reply', { done: false, error: e });
     });
 });

@@ -13,11 +13,12 @@
                     @update="fetchLibrarian"
                     :display.sync="dialog"
                     :usage.sync="usage"
+                    :body="body"
             ></mutation>
             <list
                     :loading="loading"
                     :librarians="librarian"
-                    @click="edit"
+                    @edit="edit"
             ></list>
         </v-container>
     </v-content>
@@ -52,9 +53,17 @@
       },
       edit(body) {
         this.body = body;
+        this.usage = 'edit';
         this.dialog = true;
       },
       ...mapActions(['updateLibrarian']),
+    },
+    watch: {
+      dialog(val) {
+        if (!val) {
+          this.body = {};
+        }
+      },
     },
     mounted() {
       this.$ipc.on('librarian.list.reply', this.handleFetchLibrarian.bind(this));
