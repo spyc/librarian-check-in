@@ -20,7 +20,7 @@
   export default {
     methods: {
       reportIssue() {
-        shell.openExternal('https://github.com/spyc/library-checker/issues/new');
+        shell.openExternal('https://github.com/spyc/librarian-check-in/issues/new');
       },
     },
   };
