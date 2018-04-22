@@ -40,6 +40,7 @@ ipcMain.on('librarian.add', (event, arg) => {
       event.sender.send('librarian.add.reply', { done: true, error: null });
     })
     .catch((e) => {
+      console.error(e);
       event.sender.send('librarian.add.reply', { done: false, error: e });
     });
 });
