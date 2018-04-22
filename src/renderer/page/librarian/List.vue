@@ -17,7 +17,7 @@
             <td>{{ props.item.class }}</td>
             <td>{{ props.item.class_no }}</td>
             <td class="justify-center layout px-0">
-                <v-btn icon class="mx-0">
+                <v-btn icon class="mx-0" @click="() => edit(props.item)">
                     <v-icon color="teal">edit</v-icon>
                 </v-btn>
                 <v-btn icon class="mx-0">
@@ -52,6 +52,11 @@
         required: true,
         default: [],
         type: Array,
+      },
+    },
+    methods: {
+      edit(item) {
+        this.$emit('edit', item);
       },
     },
   };

@@ -1,8 +1,24 @@
 <template>
     <v-content>
         <v-container>
-            <add></add>
-            <list :loading="loading" :librarians="librarian"></list>
+            <v-btn
+                    color="primary"
+                    @click="fetchLibrarian"
+                    :loading="loading"
+            >
+                <v-icon left>autorenew</v-icon>
+                <span>Update</span>
+            </v-btn>
+            <mutation
+                    @update="fetchLibrarian"
+                    :display.sync="dialog"
+                    :usage.sync="usage"
+            ></mutation>
+            <list
+                    :loading="loading"
+                    :librarians="librarian"
+                    @click="edit"
+            ></list>
         </v-container>
     </v-content>
 </template>
@@ -13,11 +29,14 @@
   export default {
     components: {
       List: () => import('./List.vue'),
-      Add: () => import('./Add.vue'),
+      Mutation: () => import('./Mutation.vue'),
     },
     data() {
       return {
         loading: true,
+        dialog: false,
+        usage: 'add',
+        body: {},
       };
     },
     computed: mapState(['librarian']),
@@ -27,9 +46,13 @@
         this.loading = true;
       },
       handleFetchLibrarian(e, librarian) {
-        console.debug(librarian);
+        console.debug('Fetch Librarian', librarian);
         this.loading = false;
         this.updateLibrarian(librarian);
+      },
+      edit(body) {
+        this.body = body;
+        this.dialog = true;
       },
       ...mapActions(['updateLibrarian']),
     },
