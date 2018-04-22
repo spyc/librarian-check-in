@@ -11,5 +11,6 @@ CREATE TABLE record(
     id CHARACTER(8) NOT NULL,
     check_in INTEGER NOT NULL,
     check_out INTEGER DEFAULT NULL,
-    rank TEXT DEFAULT NULL
+    rank TEXT DEFAULT NULL,
+    FOREIGN KEY (id) REFERENCES librarian(id)
 );
