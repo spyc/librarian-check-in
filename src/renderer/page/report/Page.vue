@@ -26,8 +26,23 @@
             <query :report="report" :loading="loading" @query="query"></query>
             <v-progress-linear v-if="loading" indeterminate color="primary"></v-progress-linear>
             <v-alert v-else-if="result.error" type="error" :value="true">{{ result.error.code }}</v-alert>
-            <report-view v-else-if="hasResult" :report="report" :rows="result.rows"></report-view>
+            <report-view
+                    v-else-if="hasResult"
+                    :report="report"
+                    :rows="result.rows"
+                    @export="handleFinishExport"
+                    @error="handleError"
+            ></report-view>
         </v-container>
+        <v-snackbar
+                bottom
+                v-model="snackbar"
+                :color="snackbarColor"
+                :timeout="5000"
+        >
+            {{ message }}
+            <v-btn flat color="white" @click.native="snackbar = false">Close</v-btn>
+        </v-snackbar>
     </v-content>
 </template>
 
@@ -48,6 +63,9 @@
         ],
         hasResult: false,
         result: { error: null },
+        message: '',
+        snackbar: false,
+        snackbarColor: 'success',
       };
     },
     watch: {
@@ -71,6 +89,16 @@
           this.hasResult = true;
         }
         this.result = result;
+      },
+      handleFinishExport() {
+        this.snackbarColor = 'success';
+        this.message = 'Finish Export File';
+        this.snackbar = true;
+      },
+      handleError(err) {
+        this.snackbarColor = 'error';
+        this.message = `Error: ${err}`;
+        this.snackbar = true;
       },
     },
     mounted() {

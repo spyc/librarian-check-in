@@ -23,6 +23,7 @@ export default {
     }
 
     return h(elements[this.report], {
+      on: this.$listeners,
       props: {
         rows: this.rows,
       },
