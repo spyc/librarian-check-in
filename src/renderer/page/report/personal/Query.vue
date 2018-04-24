@@ -72,7 +72,7 @@
         if (this.startDate && this.endDate && this.$refs.form.validate()) {
           this.$emit('query', {
             sql,
-            param: [
+            params: [
               this.id,
               moment(`${this.startDate}T00:00:00+08:00`).tz('Asia/Hong_Kong').unix(),
               moment(`${this.endDate}T23:59:59+08:00`).tz('Asia/Hong_Kong').unix(),
