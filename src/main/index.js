@@ -9,14 +9,12 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow;
 
-function createMainWindow() {
-  const window = new BrowserWindow({ width: 960, height: 720 });
-
+function createMainWindow(window) {
   if (isDevelopment) {
     window.loadURL('http://localhost:8080');
   } else {
     window.loadURL(format({
-      pathname: path.join(__dirname, 'index.html'),
+      pathname: path.join(app.getAppPath(), 'index.html'),
       protocol: 'file',
       slashes: true,
     }));
@@ -25,8 +23,6 @@ function createMainWindow() {
   window.on('closed', () => {
     mainWindow = null;
   });
-
-  return window;
 }
 
 // quit application when all windows are closed
@@ -46,9 +42,10 @@ app.on('activate', () => {
 
 // create main BrowserWindow when electron is ready
 app.on('ready', () => {
-  mainWindow = createMainWindow();
+  mainWindow = new BrowserWindow({ width: 960, height: 720 });
   if (isDevelopment) {
     BrowserWindow.addDevToolsExtension('./data/VueDevTools');
     mainWindow.webContents.openDevTools();
   }
+  createMainWindow(mainWindow);
 });
