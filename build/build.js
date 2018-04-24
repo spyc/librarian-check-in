@@ -13,6 +13,7 @@ shell.rm('-rf', 'dist');
 shell.cp('-r', 'build/assets', 'dist');
 shell.cp('yarn.lock', 'dist');
 shell.cp('package.json', 'dist');
+shell.cp('-r', 'src/renderer/elements', 'dist');
 
 ejs.renderFile('views/index.ejs', { production: true }, (err, str) => {
   if (err) {
