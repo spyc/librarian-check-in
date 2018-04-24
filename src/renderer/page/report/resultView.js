@@ -1,8 +1,10 @@
 import Personal from './personal/ReportView.vue';
+import Overview from './overview/ReportView.vue';
 import UnknownQuery from './UnknownQuery.vue';
 
 const elements = {
   personal: Personal,
+  overview: Overview,
 };
 
 export default {

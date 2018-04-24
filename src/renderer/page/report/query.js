@@ -1,8 +1,10 @@
 import Personal from './personal/Query.vue';
+import Overview from './overview/Query.vue';
 import UnknownQuery from './UnknownQuery.vue';
 
 const elements = {
   personal: Personal,
+  overview: Overview,
 };
 
 export default {
