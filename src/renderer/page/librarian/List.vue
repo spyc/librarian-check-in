@@ -16,7 +16,7 @@
             <td>{{ props.item.name }}</td>
             <td>{{ props.item.class }}</td>
             <td>{{ props.item.class_no }}</td>
-            <td class="justify-center layout px-0">
+            <td class="justify-center layout px-0" v-if="!noActions">
                 <v-btn icon class="mx-0" @click="() => edit(props.item)">
                     <v-icon color="teal">edit</v-icon>
                 </v-btn>
@@ -31,16 +31,24 @@
 <script>
   export default {
     name: 'ListLibrarian',
-    data() {
-      return {
-        headers: [
+    computed: {
+      headers() {
+        if (this.noActions) {
+          return [
+            { text: 'Student ID', value: 'id' },
+            { text: 'Name', value: 'name' },
+            { text: 'Class', value: 'class' },
+            { text: 'Class No.', value: 'class_no' },
+          ];
+        }
+        return [
           { text: 'Student ID', value: 'id' },
           { text: 'Name', value: 'name' },
           { text: 'Class', value: 'class' },
           { text: 'Class No.', value: 'class_no' },
           { text: 'Actions', value: 'action', sortable: false },
-        ],
-      };
+        ];
+      },
     },
     props: {
       loading: {
@@ -52,6 +60,11 @@
         required: true,
         default: [],
         type: Array,
+      },
+      noActions: {
+        required: false,
+        default: false,
+        type: Boolean,
       },
     },
     methods: {

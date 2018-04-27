@@ -1,8 +1,8 @@
 <template>
     <v-content>
         <v-container>
-            <v-form @submit.prevent="submit">
-                <v-card>
+            <v-card class="my-3">
+                <v-form @submit.prevent="submit">
                     <v-layout row wrap>
                         <v-flex xs6>
                             <v-subheader>Student ID</v-subheader>
@@ -28,8 +28,9 @@
                             :loading="loading"
                             :disabled="loading"
                     >Clear</v-btn>
-                </v-card>
-            </v-form>
+                </v-form>
+            </v-card>
+            <check-in-librarian :update.sync="updated"></check-in-librarian>
         </v-container>
         <v-snackbar
                 bottom
@@ -46,6 +47,9 @@
 
 <script>
   export default {
+    components: {
+      CheckInLibrarian: () => import('./CheckInLibrarian.vue'),
+    },
     data() {
       return {
         id: '',
@@ -54,6 +58,7 @@
         icon: 'done',
         color: 'success',
         message: '',
+        updated: false,
       };
     },
     methods: {
@@ -82,6 +87,7 @@
           console.error(result.error);
         }
         this.snackbar = true;
+        this.updated = true;
         this.clear();
       },
     },
