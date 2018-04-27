@@ -37,7 +37,7 @@
     SUM(CASE rank WHEN 'fail' THEN 0.5 * (check_out - check_in) ELSE 0 END) AS fail_time
   FROM librarian
   INNER JOIN record ON record.id = librarian.id
-  WHERE check_in BETwEEN ? AND ?
+  WHERE (check_in BETwEEN ? AND ?) AND check_out IS NOT NULL
   GROUP BY librarian.id
   ORDER BY check_in ASC
   `;

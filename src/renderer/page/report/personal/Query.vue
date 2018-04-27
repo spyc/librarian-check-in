@@ -45,7 +45,7 @@
   const sql = `
   SELECT librarian.id, name, check_in, check_out, rank FROM librarian
   INNER JOIN record ON record.id = librarian.id
-  WHERE librarian.id = ? AND check_in BETwEEN ? AND ?
+  WHERE librarian.id = ? AND (check_in BETwEEN ? AND ?) AND check_out IS NOT NULL
   ORDER BY check_in ASC
   `;
 
