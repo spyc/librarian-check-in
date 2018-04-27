@@ -12,9 +12,10 @@ let mainWindow;
 function createMainWindow() {
   const window = new BrowserWindow({ width: 960, height: 720 });
   if (isDevelopment) {
+    window.loadURL('http://localhost:8080');
+
     BrowserWindow.addDevToolsExtension('./data/VueDevTools');
     mainWindow.webContents.openDevTools();
-    window.loadURL('http://localhost:8080');
   } else {
     window.loadURL(format({
       pathname: path.join(app.getAppPath(), 'index.html'),
