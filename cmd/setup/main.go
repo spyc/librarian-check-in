@@ -25,7 +25,7 @@ func main() {
 			panic(err)
 		}
 
-		if err := ioutil.WriteFile(path.Join(dataPath, "librarian.data"), content, 0644); err != nil {
+		if err := ioutil.WriteFile(path.Join(dataPath, modals.LibrarianFile), content, 0644); err != nil {
 			panic(err)
 		}
 	}
@@ -39,7 +39,7 @@ func main() {
 			panic(err)
 		}
 
-		if err := ioutil.WriteFile(path.Join(dataPath, "attendance.data"), content, 0644); err != nil {
+		if err := ioutil.WriteFile(path.Join(dataPath, modals.AttendanceFile), content, 0644); err != nil {
 			panic(err)
 		}
 	}

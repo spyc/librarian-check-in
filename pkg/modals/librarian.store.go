@@ -5,6 +5,8 @@ import (
 	"path"
 )
 
+const LibrarianFile = "librarian.data"
+
 type LibrarianStore struct {
 	AbstractStore `inject:"inline"`
 }
