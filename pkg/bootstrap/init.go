@@ -4,11 +4,12 @@ import (
 	"net/http"
 
 	"github.com/facebookgo/inject"
-	"github.com/gorilla/handlers"
 	"library.pyc.edu.hk/attendance/pkg/server"
 )
 
 var handler server.Handler
+
+type injectFunc func(*inject.Graph) error
 
 func init() {
 	var graph inject.Graph
@@ -18,19 +19,18 @@ func init() {
 		panic(err)
 	}
 
+	for _, fn := range []injectFunc{injectLogger} {
+		if err := fn(&graph); err != nil {
+			logger.Error(err)
+			panic(err)
+		}
+	}
+
 	if err := graph.Populate(); err != nil {
 		panic(err)
 	}
 }
 
-func GetHandler() (h http.Handler) {
-	h = &handler
-
-	h = handlers.CombinedLoggingHandler(logger.Writer(), h)
-	h = handlers.RecoveryHandler(
-		handlers.RecoveryLogger(logger.WithField("source", "recover")),
-		handlers.PrintRecoveryStack(true),
-	)(h)
-
-	return
+func GetHandler() http.Handler {
+	return &handler
 }

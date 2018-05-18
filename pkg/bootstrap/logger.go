@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"os"
 
+	"github.com/facebookgo/inject"
 	"github.com/sirupsen/logrus"
 )
 
@@ -18,4 +19,10 @@ func initLogger() *logrus.Logger {
 
 func GetLogger() *logrus.Logger {
 	return logger
+}
+
+func injectLogger(graph *inject.Graph) error {
+	return graph.Provide(
+		&inject.Object{Value: logger.WithField("source", "api"), Name: "api logger"},
+	)
 }

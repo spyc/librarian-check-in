@@ -7,7 +7,7 @@ import (
 )
 
 type AbstractStore struct {
-	Mutex sync.RWMutex `inject:"private"`
+	Mutex sync.RWMutex
 }
 
 func (s *AbstractStore) getRootDir() string {
