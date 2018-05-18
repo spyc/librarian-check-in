@@ -36,6 +36,17 @@
   version = "v1.1.0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/mailru/easyjson"
+  packages = [
+    ".",
+    "buffer",
+    "jlexer",
+    "jwriter"
+  ]
+  revision = "8b799c424f57fa123fc63a99d6383bc6e4c02578"
+
+[[projects]]
   name = "github.com/sirupsen/logrus"
   packages = ["."]
   revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
@@ -59,6 +70,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "dfb028f3d4a6769a5832fd319042f6531d49b3541c24f92c251995d9d9aebc58"
+  inputs-digest = "0ac6b401bebd17b4e9d76934429a221698b89babbbe9b10de54f17504c8837b9"
   solver-name = "gps-cdcl"
   solver-version = 1
