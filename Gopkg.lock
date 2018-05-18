@@ -36,6 +36,12 @@
   version = "v1.1.0"
 
 [[projects]]
+  name = "github.com/gorilla/handlers"
+  packages = ["."]
+  revision = "90663712d74cb411cbef281bc1e08c19d1a76145"
+  version = "v1.3.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/mailru/easyjson"
   packages = [
@@ -70,6 +76,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "0ac6b401bebd17b4e9d76934429a221698b89babbbe9b10de54f17504c8837b9"
+  inputs-digest = "b2d3cccfdf285e58f5d835798a6ae965d4b51d2d79ebdb909091bde8a1159728"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/facebookgo/inject"
+	"github.com/gorilla/handlers"
 	"library.pyc.edu.hk/attendance/pkg/server"
 )
 
@@ -22,6 +23,14 @@ func init() {
 	}
 }
 
-func GetHandler() http.Handler {
-	return &handler
+func GetHandler() (h http.Handler) {
+	h = &handler
+
+	h = handlers.CombinedLoggingHandler(logger.Writer(), h)
+	h = handlers.RecoveryHandler(
+		handlers.RecoveryLogger(logger.WithField("source", "recover")),
+		handlers.PrintRecoveryStack(true),
+	)(h)
+
+	return
 }
