@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package attendance;
+
+option go_package = "modals";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "github.com/golang/protobuf/ptypes/timestamp/timestamp.proto";
+
+option (gogoproto.equal_all) = true;
+option (gogoproto.populate_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.testgen_all) = true;
+
+enum Rank {
+    fail = 0;
+    fair = 1;
+    good = 2;
+}
+
+message Attendance {
+    string pycid = 1;
+    google.protobuf.Timestamp check_in = 2 [(gogoproto.stdtime) = true];
+    google.protobuf.Timestamp check_out = 3 [(gogoproto.stdtime) = true];
+    Rank rank = 4;
+}
