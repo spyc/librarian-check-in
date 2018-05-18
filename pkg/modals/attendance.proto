@@ -26,3 +26,7 @@ message Attendance {
     google.protobuf.Timestamp check_out = 3 [(gogoproto.stdtime) = true];
     Rank rank = 4;
 }
+
+message Records {
+    repeated Attendance records = 1;
+}

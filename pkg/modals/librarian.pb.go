@@ -9,6 +9,7 @@
 
 	It has these top-level messages:
 		Librarian
+		Librarians
 */
 package modals
 
@@ -70,8 +71,25 @@ func (m *Librarian) GetClassNo() string {
 	return ""
 }
 
+type Librarians struct {
+	Members []*Librarian `protobuf:"bytes,1,rep,name=members" json:"members,omitempty"`
+}
+
+func (m *Librarians) Reset()                    { *m = Librarians{} }
+func (m *Librarians) String() string            { return proto.CompactTextString(m) }
+func (*Librarians) ProtoMessage()               {}
+func (*Librarians) Descriptor() ([]byte, []int) { return fileDescriptorLibrarian, []int{1} }
+
+func (m *Librarians) GetMembers() []*Librarian {
+	if m != nil {
+		return m.Members
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*Librarian)(nil), "librarian.Librarian")
+	proto.RegisterType((*Librarians)(nil), "librarian.Librarians")
 }
 func (this *Librarian) Equal(that interface{}) bool {
 	if that == nil {
@@ -103,6 +121,35 @@ func (this *Librarian) Equal(that interface{}) bool {
 	}
 	if this.ClassNo != that1.ClassNo {
 		return false
+	}
+	return true
+}
+func (this *Librarians) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*Librarians)
+	if !ok {
+		that2, ok := that.(Librarians)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if len(this.Members) != len(that1.Members) {
+		return false
+	}
+	for i := range this.Members {
+		if !this.Members[i].Equal(that1.Members[i]) {
+			return false
+		}
 	}
 	return true
 }
@@ -148,6 +195,36 @@ func (m *Librarian) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
+func (m *Librarians) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Librarians) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Members) > 0 {
+		for _, msg := range m.Members {
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintLibrarian(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	return i, nil
+}
+
 func encodeVarintLibrarian(dAtA []byte, offset int, v uint64) int {
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
@@ -163,6 +240,20 @@ func NewPopulatedLibrarian(r randyLibrarian, easy bool) *Librarian {
 	this.Name = string(randStringLibrarian(r))
 	this.Class = string(randStringLibrarian(r))
 	this.ClassNo = string(randStringLibrarian(r))
+	if !easy && r.Intn(10) != 0 {
+	}
+	return this
+}
+
+func NewPopulatedLibrarians(r randyLibrarian, easy bool) *Librarians {
+	this := &Librarians{}
+	if r.Intn(10) != 0 {
+		v1 := r.Intn(5)
+		this.Members = make([]*Librarian, v1)
+		for i := 0; i < v1; i++ {
+			this.Members[i] = NewPopulatedLibrarian(r, easy)
+		}
+	}
 	if !easy && r.Intn(10) != 0 {
 	}
 	return this
@@ -187,9 +278,9 @@ func randUTF8RuneLibrarian(r randyLibrarian) rune {
 	return rune(ru + 61)
 }
 func randStringLibrarian(r randyLibrarian) string {
-	v1 := r.Intn(100)
-	tmps := make([]rune, v1)
-	for i := 0; i < v1; i++ {
+	v2 := r.Intn(100)
+	tmps := make([]rune, v2)
+	for i := 0; i < v2; i++ {
 		tmps[i] = randUTF8RuneLibrarian(r)
 	}
 	return string(tmps)
@@ -211,11 +302,11 @@ func randFieldLibrarian(dAtA []byte, r randyLibrarian, fieldNumber int, wire int
 	switch wire {
 	case 0:
 		dAtA = encodeVarintPopulateLibrarian(dAtA, uint64(key))
-		v2 := r.Int63()
+		v3 := r.Int63()
 		if r.Intn(2) == 0 {
-			v2 *= -1
+			v3 *= -1
 		}
-		dAtA = encodeVarintPopulateLibrarian(dAtA, uint64(v2))
+		dAtA = encodeVarintPopulateLibrarian(dAtA, uint64(v3))
 	case 1:
 		dAtA = encodeVarintPopulateLibrarian(dAtA, uint64(key))
 		dAtA = append(dAtA, byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)))
@@ -258,6 +349,18 @@ func (m *Librarian) Size() (n int) {
 	l = len(m.ClassNo)
 	if l > 0 {
 		n += 1 + l + sovLibrarian(uint64(l))
+	}
+	return n
+}
+
+func (m *Librarians) Size() (n int) {
+	var l int
+	_ = l
+	if len(m.Members) > 0 {
+		for _, e := range m.Members {
+			l = e.Size()
+			n += 1 + l + sovLibrarian(uint64(l))
+		}
 	}
 	return n
 }
@@ -441,6 +544,87 @@ func (m *Librarian) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *Librarians) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowLibrarian
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Librarians: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Librarians: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Members", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLibrarian
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthLibrarian
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Members = append(m.Members, &Librarian{})
+			if err := m.Members[len(m.Members)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipLibrarian(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthLibrarian
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func skipLibrarian(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
@@ -549,7 +733,7 @@ var (
 func init() { proto.RegisterFile("librarian.proto", fileDescriptorLibrarian) }
 
 var fileDescriptorLibrarian = []byte{
-	// 184 bytes of a gzipped FileDescriptorProto
+	// 219 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0xcf, 0xc9, 0x4c, 0x2a,
 	0x4a, 0x2c, 0xca, 0x4c, 0xcc, 0xd3, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x84, 0x0b, 0x48,
 	0xe9, 0xa6, 0x67, 0x96, 0x64, 0x94, 0x26, 0xe9, 0x25, 0xe7, 0xe7, 0xea, 0xa7, 0xe7, 0xa7, 0xe7,
@@ -558,8 +742,10 @@ var fileDescriptorLibrarian = []byte{
 	0xc0, 0xa8, 0xc1, 0x19, 0x04, 0xe1, 0x08, 0x09, 0x71, 0xb1, 0xe4, 0x25, 0xe6, 0xa6, 0x4a, 0x30,
 	0x81, 0x05, 0xc1, 0x6c, 0x90, 0xca, 0xe4, 0x9c, 0xc4, 0xe2, 0x62, 0x09, 0x66, 0x88, 0x4a, 0x30,
 	0x47, 0x48, 0x92, 0x8b, 0x03, 0xcc, 0x88, 0xcf, 0xcb, 0x97, 0x60, 0x01, 0x4b, 0xb0, 0x83, 0xf9,
-	0x7e, 0xf9, 0x4e, 0x0a, 0x3f, 0x1e, 0xca, 0x31, 0xae, 0x78, 0x24, 0xc7, 0xb8, 0xe3, 0x91, 0x1c,
-	0xe3, 0x89, 0x47, 0x72, 0x8c, 0x17, 0x1e, 0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7, 0x18, 0xc5, 0x96,
-	0x9b, 0x9f, 0x92, 0x98, 0x53, 0x9c, 0xc4, 0x06, 0x76, 0x90, 0x31, 0x20, 0x00, 0x00, 0xff, 0xff,
-	0xd1, 0xca, 0xda, 0x01, 0xdd, 0x00, 0x00, 0x00,
+	0x7e, 0xf9, 0x4a, 0x36, 0x5c, 0x5c, 0x70, 0x7b, 0x8a, 0x85, 0xf4, 0xb8, 0xd8, 0x73, 0x53, 0x73,
+	0x93, 0x52, 0x8b, 0x8a, 0x25, 0x18, 0x15, 0x98, 0x35, 0xb8, 0x8d, 0x44, 0xf4, 0x10, 0x5e, 0x82,
+	0xab, 0x0b, 0x82, 0x29, 0x72, 0x52, 0xf8, 0xf1, 0x50, 0x8e, 0x71, 0xc5, 0x23, 0x39, 0xc6, 0x1d,
+	0x8f, 0xe4, 0x18, 0x4f, 0x3c, 0x92, 0x63, 0xbc, 0xf0, 0x48, 0x8e, 0xf1, 0xc1, 0x23, 0x39, 0xc6,
+	0x28, 0xb6, 0xdc, 0xfc, 0x94, 0xc4, 0x9c, 0xe2, 0x24, 0x36, 0xb0, 0x77, 0x8c, 0x01, 0x01, 0x00,
+	0x00, 0xff, 0xff, 0x0d, 0x39, 0x9b, 0x1d, 0x1b, 0x01, 0x00, 0x00,
 }

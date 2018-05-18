@@ -19,3 +19,7 @@ message Librarian {
     string class = 3;
     string class_no = 4;
 }
+
+message Librarians {
+    repeated Librarian members = 1;
+}

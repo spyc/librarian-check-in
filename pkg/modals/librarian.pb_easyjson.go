@@ -17,7 +17,122 @@ var (
 	_ easyjson.Marshaler
 )
 
-func easyjson62dfab6cDecodeLibraryPycEduHkAttendancePkgModals(in *jlexer.Lexer, out *Librarian) {
+func easyjson62dfab6cDecodeLibraryPycEduHkAttendancePkgModals(in *jlexer.Lexer, out *Librarians) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeString()
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "members":
+			if in.IsNull() {
+				in.Skip()
+				out.Members = nil
+			} else {
+				in.Delim('[')
+				if out.Members == nil {
+					if !in.IsDelim(']') {
+						out.Members = make([]*Librarian, 0, 8)
+					} else {
+						out.Members = []*Librarian{}
+					}
+				} else {
+					out.Members = (out.Members)[:0]
+				}
+				for !in.IsDelim(']') {
+					var v1 *Librarian
+					if in.IsNull() {
+						in.Skip()
+						v1 = nil
+					} else {
+						if v1 == nil {
+							v1 = new(Librarian)
+						}
+						if data := in.Raw(); in.Ok() {
+							in.AddError((*v1).UnmarshalJSON(data))
+						}
+					}
+					out.Members = append(out.Members, v1)
+					in.WantComma()
+				}
+				in.Delim(']')
+			}
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjson62dfab6cEncodeLibraryPycEduHkAttendancePkgModals(out *jwriter.Writer, in Librarians) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	if len(in.Members) != 0 {
+		const prefix string = ",\"members\":"
+		if first {
+			first = false
+			out.RawString(prefix[1:])
+		} else {
+			out.RawString(prefix)
+		}
+		{
+			out.RawByte('[')
+			for v2, v3 := range in.Members {
+				if v2 > 0 {
+					out.RawByte(',')
+				}
+				if v3 == nil {
+					out.RawString("null")
+				} else {
+					out.Raw((*v3).MarshalJSON())
+				}
+			}
+			out.RawByte(']')
+		}
+	}
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v Librarians) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjson62dfab6cEncodeLibraryPycEduHkAttendancePkgModals(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v Librarians) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjson62dfab6cEncodeLibraryPycEduHkAttendancePkgModals(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *Librarians) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjson62dfab6cDecodeLibraryPycEduHkAttendancePkgModals(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *Librarians) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjson62dfab6cDecodeLibraryPycEduHkAttendancePkgModals(l, v)
+}
+func easyjson62dfab6cDecodeLibraryPycEduHkAttendancePkgModals1(in *jlexer.Lexer, out *Librarian) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -54,7 +169,7 @@ func easyjson62dfab6cDecodeLibraryPycEduHkAttendancePkgModals(in *jlexer.Lexer, 
 		in.Consumed()
 	}
 }
-func easyjson62dfab6cEncodeLibraryPycEduHkAttendancePkgModals(out *jwriter.Writer, in Librarian) {
+func easyjson62dfab6cEncodeLibraryPycEduHkAttendancePkgModals1(out *jwriter.Writer, in Librarian) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -104,23 +219,23 @@ func easyjson62dfab6cEncodeLibraryPycEduHkAttendancePkgModals(out *jwriter.Write
 // MarshalJSON supports json.Marshaler interface
 func (v Librarian) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjson62dfab6cEncodeLibraryPycEduHkAttendancePkgModals(&w, v)
+	easyjson62dfab6cEncodeLibraryPycEduHkAttendancePkgModals1(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v Librarian) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjson62dfab6cEncodeLibraryPycEduHkAttendancePkgModals(w, v)
+	easyjson62dfab6cEncodeLibraryPycEduHkAttendancePkgModals1(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
 func (v *Librarian) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjson62dfab6cDecodeLibraryPycEduHkAttendancePkgModals(&r, v)
+	easyjson62dfab6cDecodeLibraryPycEduHkAttendancePkgModals1(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Librarian) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjson62dfab6cDecodeLibraryPycEduHkAttendancePkgModals(l, v)
+	easyjson62dfab6cDecodeLibraryPycEduHkAttendancePkgModals1(l, v)
 }
