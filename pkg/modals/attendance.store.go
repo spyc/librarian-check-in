@@ -12,6 +12,7 @@ import (
 const AttendanceFile = "attendance.data"
 
 var ErrMultipleCheckIn = errors.New("already check in")
+var ErrRecordNotFound = errors.New("check in record not found")
 
 type AttendanceStore struct {
 	AbstractStore
@@ -132,5 +133,94 @@ func (s *AttendanceStore) CheckIn(pycid string) (err error) {
 
 	err = ioutil.WriteFile(s.filename(), data, 0644)
 	s.checkedIn.Store(pycid, l)
+	return
+}
+
+func (s *AttendanceStore) CheckOut(pycid string) (err error) {
+	exists, err := s.alreadyCheckIn(pycid)
+	if err != nil {
+		return
+	} else if !exists {
+		return ErrRecordNotFound
+	}
+
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+	data, err := ioutil.ReadFile(s.filename())
+	if err != nil {
+		return
+	}
+
+	records := new(Records)
+
+	if err := records.Unmarshal(data); err != nil {
+		return err
+	}
+
+	now := time.Now()
+	modified := false
+
+	for i, record := range records.Records {
+		if record.CheckOut == nil && record.Pycid == pycid {
+			record.CheckOut = &now
+			record.Rank = Rank_fair
+			records.Records[i] = record
+			modified = true
+			break
+		}
+	}
+
+	if !modified {
+		return ErrRecordNotFound
+	}
+
+	data, err = records.Marshal()
+	if err != nil {
+		return
+	}
+
+	err = ioutil.WriteFile(s.filename(), data, 0644)
+	s.checkedIn.Delete(pycid)
+	return
+}
+
+func (s *AttendanceStore) CheckOutAll() (err error) {
+	s.Mutex.Lock()
+	defer s.Mutex.Unlock()
+	data, err := ioutil.ReadFile(s.filename())
+	if err != nil {
+		return
+	}
+
+	records := new(Records)
+
+	if err := records.Unmarshal(data); err != nil {
+		return err
+	}
+
+	now := time.Now()
+	modified := false
+
+	for i, record := range records.Records {
+		if record.CheckOut == nil {
+			record.CheckOut = &now
+			record.Rank = Rank_fair
+			records.Records[i] = record
+			modified = true
+			break
+		}
+	}
+
+	if !modified {
+		return ErrRecordNotFound
+	}
+
+	data, err = records.Marshal()
+	if err != nil {
+		return
+	}
+
+	err = ioutil.WriteFile(s.filename(), data, 0644)
+	s.checkedIn = sync.Map{}
 	return
 }

@@ -25,6 +25,9 @@ func (h *ApiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		mux := http.NewServeMux()
 		mux.Handle("/checkin", h.CheckInHandler)
 		mux.Handle("/checkin/", h.CheckInHandler)
+		mux.Handle("/checkout", h.CheckInHandler)
+		mux.Handle("/checkout/", h.CheckInHandler)
+
 		mux.Handle("/librarian", h.LibrarianHandler)
 		mux.Handle("/librarian/", h.LibrarianHandler)
 

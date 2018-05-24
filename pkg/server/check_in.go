@@ -22,6 +22,8 @@ func (h *CheckInHandler) init() {
 	router := httprouter.New()
 	router.HandlerFunc("GET", "/checkin", h.getAll)
 	router.HandlerFunc("POST", "/checkin/:pycid", h.checkIn)
+	router.HandlerFunc("POST", "/checkout/:pycid", h.checkOut)
+	router.HandlerFunc("POST", "/checkout", h.checkOutAll)
 	h.router = router
 }
 
@@ -67,6 +69,47 @@ func (h *CheckInHandler) checkIn(w http.ResponseWriter, r *http.Request) {
 			break
 		default:
 			status = http.StatusInternalServerError
+			h.Logger.Error(err)
+			break
+		}
+		w.WriteHeader(status)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
+func (h *CheckInHandler) checkOut(w http.ResponseWriter, r *http.Request) {
+	params := httprouter.ParamsFromContext(r.Context())
+	id := params.ByName("pycid")
+	if err := h.Store.CheckOut(id); err != nil {
+		var status int
+		switch err {
+		case modals.ErrRecordNotFound:
+			status = http.StatusNotFound
+			break
+		default:
+			status = http.StatusInternalServerError
+			h.Logger.Error(err)
+			break
+		}
+		w.WriteHeader(status)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
+func (h *CheckInHandler) checkOutAll(w http.ResponseWriter, r *http.Request) {
+	if err := h.Store.CheckOutAll(); err != nil {
+		var status int
+		switch err {
+		case modals.ErrRecordNotFound:
+			status = http.StatusNotFound
+			break
+		default:
+			status = http.StatusInternalServerError
+			h.Logger.Error(err)
 			break
 		}
 		w.WriteHeader(status)
