@@ -4,19 +4,6 @@
             <v-card class="my-3">
                 <v-form>
                     <v-layout row wrap>
-
-                        <v-flex xs6>
-                            <v-subheader>Review</v-subheader>
-                        </v-flex>
-                        <v-flex xs6>
-                            <v-select
-                                    :items="ranks"
-                                    v-model="rank"
-                                    label="Rank"
-                                    single-line
-                            ></v-select>
-                        </v-flex>
-
                         <v-flex xs6>
                             <v-subheader>Student ID</v-subheader>
                         </v-flex>
@@ -78,11 +65,11 @@
       },
       checkOut() {
         this.loading = true;
-        this.$ipc.send('checkout', { id: this.id, rank: this.rank });
+        // this.$ipc.send('checkout', { id: this.id, rank: this.rank });
       },
       batchCheckOut() {
         this.loading = true;
-        this.$ipc.send('checkout.batch');
+        // this.$ipc.send('checkout.batch');
       },
       handleCheckOutReply(event, { done, error }) {
         this.loading = false;
@@ -105,9 +92,6 @@
         this.updated = true;
         this.clear();
       },
-    },
-    mounted() {
-      this.$ipc.on('checkout.reply', this.handleCheckOutReply.bind(this));
     },
   };
 </script>

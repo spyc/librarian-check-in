@@ -46,6 +46,8 @@
 </template>
 
 <script>
+  import axios from 'axios';
+
   export default {
     components: {
       CheckInLibrarian: () => import('./CheckInLibrarian.vue'),
@@ -66,36 +68,36 @@
         this.id = '';
       },
       submit() {
-        this.$ipc.send('checkin', this.id);
         this.loading = true;
+        axios.post(`/api/checkin/${this.id}`, {}, {
+          validateStatus: status => (status >= 200 && status < 500),
+        })
+          .then(({ status }) => {
+            this.loading = false;
+            if (status === 200) {
+              this.icon = 'done';
+              this.color = 'success';
+              this.message = 'Finish Check In';
+              console.debug('Check In');
+            } else {
+              this.icon = 'close';
+              this.color = 'error';
+              if (status === 404) {
+                this.message = 'Record Not Found';
+              } else if (status === 409) {
+                this.message = 'Already Check In';
+              } else {
+                this.message = 'Error occur';
+              }
+
+              console.error(this.message);
+            }
+
+            this.snackbar = true;
+            this.updated = true;
+            this.clear();
+          });
       },
-      handleCheckInReply(event, result) {
-        this.loading = false;
-        if (result.done) {
-          this.icon = 'done';
-          this.color = 'success';
-          this.message = 'Finish Check In';
-          console.debug('Check In', result);
-        } else {
-          this.icon = 'close';
-          this.color = 'error';
-          if (result.error.code === 'SQLITE_CONSTRAINT') {
-            this.message = 'Record Not Found';
-          } else {
-            this.message = result.error.code;
-          }
-          console.error(result.error);
-        }
-        this.snackbar = true;
-        this.updated = true;
-        this.clear();
-      },
-    },
-    mounted() {
-      this.$ipc.on('checkin.reply', this.handleCheckInReply.bind(this));
-    },
-    destroyed() {
-      this.$ipc.removeAllListeners('checkin.reply');
     },
   };
 </script>

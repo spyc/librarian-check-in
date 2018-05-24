@@ -24,6 +24,8 @@
 </template>
 
 <script>
+  import axios from 'axios';
+
   export default {
     name: 'CheckInLibrarian',
     components: {
@@ -52,20 +54,16 @@
     methods: {
       getCheckIn() {
         this.loading = true;
-        this.$ipc.send('checkin.list');
-      },
-      handleCheckInListReply(event, librarians) {
-        this.loading = false;
-        this.librarians = librarians;
-        this.$emit('update:update', false);
+        axios.get('/api/checkin')
+          .then(({ data }) => {
+            this.loading = false;
+            this.librarians = data;
+            this.$emit('update:update', false);
+          });
       },
     },
     mounted() {
-      this.$ipc.on('checkin.list.reply', this.handleCheckInListReply.bind(this));
       this.getCheckIn();
-    },
-    destroyed() {
-      this.$ipc.removeAllListeners('checkin.list.reply');
     },
   };
 </script>
