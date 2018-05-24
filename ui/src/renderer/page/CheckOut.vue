@@ -2,7 +2,7 @@
     <v-content>
         <v-container>
             <v-card class="my-3">
-                <v-form>
+                <v-form @submit="checkOut">
                     <v-layout row wrap>
                         <v-flex xs6>
                             <v-subheader>Student ID</v-subheader>
@@ -10,7 +10,6 @@
                         <v-flex xs6>
                             <v-text-field
                                     autofocus
-                                    name="pycid"
                                     label="Student ID"
                                     v-model="id"
                             ></v-text-field>
@@ -35,11 +34,7 @@
 </template>
 
 <script>
-  const ranks = [
-    'Good',
-    'Fair',
-    'Fail',
-  ];
+  import axios from 'axios';
 
   export default {
     components: {
@@ -47,9 +42,7 @@
     },
     data() {
       return {
-        ranks,
         id: '',
-        rank: 'Fair',
         snackbar: false,
         snackbarColor: 'success',
         message: '',
@@ -61,19 +54,29 @@
     methods: {
       clear() {
         this.id = '';
-        this.rank = 'Fair';
       },
-      checkOut() {
+      checkOut(e) {
+        if (e) {
+          e.preventDefault();
+        }
         this.loading = true;
-        // this.$ipc.send('checkout', { id: this.id, rank: this.rank });
+        axios.post(`/api/checkout/${this.id}`)
+          .then(({ status }) => {
+            this.handleCheckOutReply(status);
+          })
+          .catch(console.error);
       },
       batchCheckOut() {
         this.loading = true;
-        // this.$ipc.send('checkout.batch');
+        axios.post('/api/checkout')
+          .then(({ status }) => {
+            this.handleCheckOutReply(status);
+          })
+          .catch(console.error);
       },
-      handleCheckOutReply(event, { done, error }) {
+      handleCheckOutReply(status) {
         this.loading = false;
-        if (done) {
+        if (status === 200) {
           this.icon = 'done';
           this.snackbarColor = 'success';
           this.message = 'Finish Check Out';
@@ -81,12 +84,12 @@
         } else {
           this.icon = 'close';
           this.color = 'error';
-          if (error.code === 'SQLITE_CONSTRAINT') {
+          if (status === 404) {
             this.message = 'Record Not Found';
           } else {
-            this.message = error.code;
+            this.message = 'Error Occur';
           }
-          console.error(error);
+          console.error(status);
         }
         this.snackbar = true;
         this.updated = true;
