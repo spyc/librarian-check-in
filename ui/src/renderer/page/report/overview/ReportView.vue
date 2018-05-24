@@ -30,7 +30,8 @@
                     color="primary"
                     :loading="exporting"
                     :disabled="exporting"
-                    @click="exportFile"
+                    :href="csvLink"
+                    download="report.csv"
             >Export</v-btn>
         </v-card-actions>
     </v-card>
@@ -38,9 +39,6 @@
 
 <script>
   import moment from 'moment-timezone';
-  // import { remote } from 'electron';
-
-  // const { dialog } = remote;
 
   const headers = [
     { text: 'Student ID', value: 'id' },
@@ -53,8 +51,7 @@
   export default {
     name: 'PersonalReportView',
     props: {
-      rows: {
-        type: Array,
+      result: {
         required: true,
       },
     },
@@ -66,13 +63,21 @@
     },
     computed: {
       dataRows() {
-        return this.rows.map(row => ({
-          id: row.id,
+        return this.result.map(row => ({
+          id: row.pycid,
           name: row.name,
-          fair_time: row.fair_time / 60,
-          good_time: row.good_time / 60,
-          fail_time: row.fail_time / 60,
+          fair_time: row.fair_time,
+          good_time: row.good_time,
+          fail_time: row.fail_time,
         }));
+      },
+      csvContent() {
+        return this.dataRows
+          .map(row => `${row.id},${row.name},${row.fair_time},${row.good_time},${row.fail_time}`)
+          .join('\r\n');
+      },
+      csvLink() {
+        return `data:text/csv;charset=utf-8,"Student ID",Name,"Fair (min)","Good (min)","Fail (min)"\r\n${this.csvContent}`;
       },
     },
     methods: {
@@ -85,25 +90,6 @@
       ucfirst(rank) {
         return `${rank.charAt(0).toUpperCase()}${rank.substr(1)}`;
       },
-      exportFile() {
-        // const filename = dialog.showSaveDialog({
-        //   title: 'Export file',
-        //   filters: [
-        //     { name: 'CSV files', extensions: ['csv'] },
-        //   ],
-        //   properties: ['createDirectory'],
-        // });
-        // if (!filename) {
-        //   return;
-        // }
-        // console.debug('Export to ', filename);
-        // this.exporting = true;
-        // this.$ipc.send('save.file', {
-        //   filename,
-        //   headers: this.headers.map(header => header.text),
-        //   rows: this.dataRows,
-        // });
-      },
       handleExportDone(event, { success, filename, error }) {
         this.exporting = false;
         if (success) {
@@ -114,12 +100,6 @@
           this.$emit('error', error);
         }
       },
-    },
-    mounted() {
-      this.$ipc.on('save.file.done', this.handleExportDone.bind(this));
-    },
-    destroyed() {
-      this.$ipc.removeAllListeners('save.file.done');
     },
   };
 </script>

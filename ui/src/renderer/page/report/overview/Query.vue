@@ -28,20 +28,6 @@
 <script>
   import moment from 'moment-timezone';
 
-  const sql = `
-  SELECT
-    librarian.id,
-    name,
-    SUM(CASE rank WHEN 'fair' THEN 1 * (check_out - check_in) ELSE 0 END) AS fair_time,
-    SUM(CASE rank WHEN 'good' THEN 2 * (check_out - check_in) ELSE 0 END) AS good_time,
-    SUM(CASE rank WHEN 'fail' THEN 0.5 * (check_out - check_in) ELSE 0 END) AS fail_time
-  FROM librarian
-  INNER JOIN record ON record.id = librarian.id
-  WHERE (check_in BETwEEN ? AND ?) AND check_out IS NOT NULL
-  GROUP BY librarian.id
-  ORDER BY check_in ASC
-  `;
-
   export default {
     name: 'OverviewReportQuery',
     components: {
@@ -63,11 +49,8 @@
       submit() {
         if (this.startDate && this.endDate && this.$refs.form.validate()) {
           this.$emit('query', {
-            sql,
-            params: [
-              moment(`${this.startDate}T00:00:00+08:00`).tz('Asia/Hong_Kong').unix(),
-              moment(`${this.endDate}T23:59:59+08:00`).tz('Asia/Hong_Kong').unix(),
-            ],
+            startDate: moment(`${this.startDate}T00:00:00+08:00`).tz('Asia/Hong_Kong').format(),
+            endDate: moment(`${this.endDate}T23:59:59+08:00`).tz('Asia/Hong_Kong').format(),
           });
         }
       },

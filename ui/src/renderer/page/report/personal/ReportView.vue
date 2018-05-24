@@ -46,9 +46,6 @@
 
 <script>
   import moment from 'moment-timezone';
-  // import { remote } from 'electron';
-
-  // const { dialog } = remote;
 
   const headers = [
     { text: 'Check In', value: 'check_in' },
@@ -110,7 +107,7 @@
         return this.dataRows.map(row => `"${row.check_in}",${row.check_out},${row.rank},${row.total}`).join('\r\n');
       },
       csvLink() {
-        return `data:text/csv;charset=utf-8,${this.csvContent}`;
+        return `data:text/csv;charset=utf-8,"Check In","Check Out",Rank,Total\r\n${this.csvContent}`;
       },
     },
     methods: {
@@ -131,9 +128,6 @@
           return diff * 1;
         }
         return diff * 0.5;
-      },
-      exportFile() {
-
       },
       handleExportDone(event, { success, filename, error }) {
         this.exporting = false;
