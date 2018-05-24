@@ -42,10 +42,10 @@
   version = "v1.3.0"
 
 [[projects]]
+  branch = "master"
   name = "github.com/julienschmidt/httprouter"
   packages = ["."]
-  revision = "8c199fb6259ffc1af525cc3ad52ee60ba8359669"
-  version = "v1.1"
+  revision = "adbc77eec0d91467376ca515bc3a14b8434d0f18"
 
 [[projects]]
   branch = "master"
@@ -82,6 +82,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "2c53c2789164ae1832225beb33cb63f20e0d8dc4f4fa3bb31d6dc6adb515808c"
+  inputs-digest = "b7fee2dd093b070a4af96249630c0a3eb5bed1005c8cf47c4b39cb52705c44eb"
   solver-name = "gps-cdcl"
   solver-version = 1
