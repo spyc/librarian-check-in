@@ -14,8 +14,7 @@ export default {
       type: String,
       required: true,
     },
-    rows: {
-      type: Array,
+    result: {
       require: true,
     },
   },
@@ -27,7 +26,7 @@ export default {
     return h(elements[this.report], {
       on: this.$listeners,
       props: {
-        rows: this.rows,
+        result: this.result,
       },
     });
   },

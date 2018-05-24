@@ -58,7 +58,7 @@ func (s *AttendanceStore) GetCheckedIn() (_ []Librarian, err error) {
 
 	for _, record := range records {
 		if record.CheckOut == nil {
-			l, err := s.LibrarianStore.getByID(record.Pycid)
+			l, err := s.LibrarianStore.GetByID(record.Pycid)
 			if err != nil {
 				return nil, err
 			}
@@ -100,7 +100,7 @@ func (s *AttendanceStore) CheckIn(pycid string) (err error) {
 		return ErrMultipleCheckIn
 	}
 
-	l, err := s.LibrarianStore.getByID(pycid)
+	l, err := s.LibrarianStore.GetByID(pycid)
 	if err != nil {
 		return err
 	} else if l == nil {

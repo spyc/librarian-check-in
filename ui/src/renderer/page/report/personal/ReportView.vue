@@ -37,7 +37,8 @@
                     color="primary"
                     :loading="exporting"
                     :disabled="exporting"
-                    @click="exportFile"
+                    :href="csvLink"
+                    download="record.csv"
             >Export</v-btn>
         </v-card-actions>
     </v-card>
@@ -45,9 +46,9 @@
 
 <script>
   import moment from 'moment-timezone';
-  import { remote } from 'electron';
+  // import { remote } from 'electron';
 
-  const { dialog } = remote;
+  // const { dialog } = remote;
 
   const headers = [
     { text: 'Check In', value: 'check_in' },
@@ -59,8 +60,7 @@
   export default {
     name: 'PersonalReportView',
     props: {
-      rows: {
-        type: Array,
+      result: {
         required: true,
       },
     },
@@ -72,20 +72,26 @@
     },
     computed: {
       id() {
-        return this.rows.length > 0 ? this.rows[0].id : '';
+        return this.result ? this.result.librarian.pycid : '';
       },
       name() {
-        return this.rows.length > 0 ? this.rows[0].name : '';
+        return this.result ? this.result.librarian.name : '';
       },
       total() {
-        return this.rows.reduce((total, row) => {
+        if (!this.result) {
+          return 0;
+        }
+        return this.result.records.reduce((total, row) => {
           const start = this.parseDate(row.check_in);
           const end = this.parseDate(row.check_out);
           return total + this.duration(start, end, row.rank);
         }, 0);
       },
       dataRows() {
-        return this.rows.map((row) => {
+        if (!this.result || !this.result.records) {
+          return [];
+        }
+        return this.result.records.map((row) => {
           const start = this.parseDate(row.check_in);
           const end = this.parseDate(row.check_out);
           return {
@@ -96,10 +102,20 @@
           };
         });
       },
+      csvContent() {
+        if (this.dataRows.length === 0) {
+          return '';
+        }
+
+        return this.dataRows.map(row => `"${row.check_in}",${row.check_out},${row.rank},${row.total}`).join('\r\n');
+      },
+      csvLink() {
+        return `data:text/csv;charset=utf-8,${this.csvContent}`;
+      },
     },
     methods: {
       parseDate(time) {
-        return moment.unix(time).tz('Asia/Hong_Kong');
+        return moment(time).tz('Asia/Hong_Kong');
       },
       formatDate(time) {
         return time.format('Do MMM, YYYY HH:mm');
@@ -117,23 +133,7 @@
         return diff * 0.5;
       },
       exportFile() {
-        const filename = dialog.showSaveDialog({
-          title: 'Export file',
-          filters: [
-            { name: 'CSV files', extensions: ['csv'] },
-          ],
-          properties: ['createDirectory'],
-        });
-        if (!filename) {
-          return;
-        }
-        console.debug('Export to ', filename);
-        this.exporting = true;
-        this.$ipc.send('save.file', {
-          filename,
-          headers: this.headers.map(header => header.text),
-          rows: this.dataRows,
-        });
+
       },
       handleExportDone(event, { success, filename, error }) {
         this.exporting = false;
@@ -145,12 +145,6 @@
           this.$emit('error', error);
         }
       },
-    },
-    mounted() {
-      this.$ipc.on('save.file.done', this.handleExportDone.bind(this));
-    },
-    destroyed() {
-      this.$ipc.removeAllListeners('save.file.done');
     },
   };
 </script>

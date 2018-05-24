@@ -29,7 +29,7 @@
             <report-view
                     v-else-if="hasResult"
                     :report="report"
-                    :rows="result.rows"
+                    :result="result"
                     @export="handleFinishExport"
                     @error="handleError"
             ></report-view>
@@ -47,6 +47,8 @@
 </template>
 
 <script>
+  import axios from 'axios';
+
   export default {
     name: 'report',
     components: {
@@ -80,15 +82,15 @@
       query(q) {
         console.log('Query', q);
         this.loading = true;
-        this.$ipc.send('report.query', q);
-      },
-      handleReceiveReport(e, result) {
-        console.log('Report', result);
-        this.loading = false;
-        if (result.success) {
-          this.hasResult = true;
-        }
-        this.result = result;
+        axios.get(`/api/report/${this.report}`, { params: q })
+          .then(({ data, status }) => {
+            this.loading = false;
+            if (status === 200) {
+              this.hasResult = true;
+            }
+            console.debug(data);
+            this.result = data;
+          });
       },
       handleFinishExport() {
         this.snackbarColor = 'success';
@@ -100,12 +102,6 @@
         this.message = `Error: ${err}`;
         this.snackbar = true;
       },
-    },
-    mounted() {
-      this.$ipc.on('report.query.reply', this.handleReceiveReport.bind(this));
-    },
-    destroyed() {
-      this.$ipc.removeAllListeners('report.query.reply');
     },
   };
 </script>

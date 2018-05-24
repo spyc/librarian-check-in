@@ -38,9 +38,9 @@
 
 <script>
   import moment from 'moment-timezone';
-  import { remote } from 'electron';
+  // import { remote } from 'electron';
 
-  const { dialog } = remote;
+  // const { dialog } = remote;
 
   const headers = [
     { text: 'Student ID', value: 'id' },
@@ -86,23 +86,23 @@
         return `${rank.charAt(0).toUpperCase()}${rank.substr(1)}`;
       },
       exportFile() {
-        const filename = dialog.showSaveDialog({
-          title: 'Export file',
-          filters: [
-            { name: 'CSV files', extensions: ['csv'] },
-          ],
-          properties: ['createDirectory'],
-        });
-        if (!filename) {
-          return;
-        }
-        console.debug('Export to ', filename);
-        this.exporting = true;
-        this.$ipc.send('save.file', {
-          filename,
-          headers: this.headers.map(header => header.text),
-          rows: this.dataRows,
-        });
+        // const filename = dialog.showSaveDialog({
+        //   title: 'Export file',
+        //   filters: [
+        //     { name: 'CSV files', extensions: ['csv'] },
+        //   ],
+        //   properties: ['createDirectory'],
+        // });
+        // if (!filename) {
+        //   return;
+        // }
+        // console.debug('Export to ', filename);
+        // this.exporting = true;
+        // this.$ipc.send('save.file', {
+        //   filename,
+        //   headers: this.headers.map(header => header.text),
+        //   rows: this.dataRows,
+        // });
       },
       handleExportDone(event, { success, filename, error }) {
         this.exporting = false;

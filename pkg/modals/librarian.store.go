@@ -25,8 +25,8 @@ func (s *LibrarianStore) filename() string {
 	return path.Join(s.getRootDir(), LibrarianFile)
 }
 
-func (s *LibrarianStore) getByID(id string) (_ *Librarian, err error) {
-	logger := s.Logger.WithField("func", "getByID")
+func (s *LibrarianStore) GetByID(id string) (_ *Librarian, err error) {
+	logger := s.Logger.WithField("func", "GetByID")
 	if !s.cached {
 		s.Logger.Debug("get all")
 		if _, err := s.GetAll(); err != nil {
@@ -38,8 +38,6 @@ func (s *LibrarianStore) getByID(id string) (_ *Librarian, err error) {
 	s.Mutex.RLock()
 	defer s.Mutex.RUnlock()
 	val, exists := s.cache.Load(id)
-
-	logger.Debug(val, exists)
 
 	if !exists {
 		return nil, nil
@@ -75,7 +73,6 @@ func (s *LibrarianStore) buildCache(librarians []*Librarian) {
 	}
 
 	s.cache = cache
-	s.Logger.Debug(s.cache)
 	s.cached = true
 	s.Logger.Debug("renew cache")
 }

@@ -15,6 +15,7 @@ type ApiHandler struct {
 	Logger           *logrus.Entry          `inject:"api logger"`
 	CheckInHandler   *CheckInHandler        `inject:""`
 	LibrarianHandler *LibrarianHandler      `inject:""`
+	ReportHandler    *ReportHandler         `inject:""`
 
 	handler   http.Handler
 	bootstrap sync.Once
@@ -30,6 +31,8 @@ func (h *ApiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		mux.Handle("/librarian", h.LibrarianHandler)
 		mux.Handle("/librarian/", h.LibrarianHandler)
+
+		mux.Handle("/report/", h.ReportHandler)
 
 		handler := handlers.CombinedLoggingHandler(h.Logger.Writer(), mux)
 		handler = handlers.RecoveryHandler(
