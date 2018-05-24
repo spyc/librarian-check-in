@@ -5,15 +5,16 @@ import (
 	"sync"
 
 	"github.com/gorilla/handlers"
-	"github.com/julienschmidt/httprouter"
 	"github.com/sirupsen/logrus"
 
 	"library.pyc.edu.hk/attendance/pkg/modals"
 )
 
 type ApiHandler struct {
-	LibrarianStore *modals.LibrarianStore `inject:""`
-	Logger         *logrus.Entry          `inject:"api logger"`
+	LibrarianStore   *modals.LibrarianStore `inject:""`
+	Logger           *logrus.Entry          `inject:"api logger"`
+	CheckInHandler   *CheckInHandler        `inject:""`
+	LibrarianHandler *LibrarianHandler      `inject:""`
 
 	handler   http.Handler
 	bootstrap sync.Once
@@ -21,10 +22,13 @@ type ApiHandler struct {
 
 func (h *ApiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.bootstrap.Do(func() {
-		router := httprouter.New()
-		h.bindLibrarianRoute(router)
+		mux := http.NewServeMux()
+		mux.Handle("/checkin", h.CheckInHandler)
+		mux.Handle("/checkin/", h.CheckInHandler)
+		mux.Handle("/librarian", h.LibrarianHandler)
+		mux.Handle("/librarian/", h.LibrarianHandler)
 
-		handler := handlers.CombinedLoggingHandler(h.Logger.Writer(), router)
+		handler := handlers.CombinedLoggingHandler(h.Logger.Writer(), mux)
 		handler = handlers.RecoveryHandler(
 			handlers.RecoveryLogger(h.Logger.WithField("source", "recover")),
 			handlers.PrintRecoveryStack(true),

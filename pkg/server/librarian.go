@@ -4,19 +4,36 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"sync"
 
 	"github.com/julienschmidt/httprouter"
+	"github.com/sirupsen/logrus"
 	"library.pyc.edu.hk/attendance/pkg/modals"
 )
 
-func (h *ApiHandler) bindLibrarianRoute(router *httprouter.Router) {
+type LibrarianHandler struct {
+	LibrarianStore *modals.LibrarianStore `inject:""`
+	Logger         *logrus.Entry          `inject:"api logger"`
+
+	handler   http.Handler
+	bootstrap sync.Once
+}
+
+func (h *LibrarianHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	h.bootstrap.Do(h.init)
+	h.handler.ServeHTTP(w, r)
+}
+
+func (h *LibrarianHandler) init() {
+	router := httprouter.New()
 	router.HandlerFunc("GET", "/librarian", h.getLibrarians)
 	router.HandlerFunc("POST", "/librarian", h.addLibrarian)
 	router.HandlerFunc("PUT", "/librarian/:pycid", h.updateLibrarian)
 	router.HandlerFunc("DELETE", "/librarian/:pycid", h.deleteLibrarian)
+	h.handler = router
 }
 
-func (h *ApiHandler) getLibrarians(w http.ResponseWriter, r *http.Request) {
+func (h *LibrarianHandler) getLibrarians(w http.ResponseWriter, r *http.Request) {
 	librarians, err := h.LibrarianStore.GetAll()
 	if err != nil {
 		h.Logger.Error(err)
@@ -39,7 +56,7 @@ func (h *ApiHandler) getLibrarians(w http.ResponseWriter, r *http.Request) {
 	w.Write(body)
 }
 
-func (h *ApiHandler) addLibrarian(w http.ResponseWriter, r *http.Request) {
+func (h *LibrarianHandler) addLibrarian(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		h.Logger.Error(err)
@@ -63,7 +80,7 @@ func (h *ApiHandler) addLibrarian(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
-func (h *ApiHandler) updateLibrarian(w http.ResponseWriter, r *http.Request) {
+func (h *LibrarianHandler) updateLibrarian(w http.ResponseWriter, r *http.Request) {
 	params := httprouter.ParamsFromContext(r.Context())
 	id := params.ByName("pycid")
 
@@ -90,7 +107,7 @@ func (h *ApiHandler) updateLibrarian(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func (h *ApiHandler) deleteLibrarian(w http.ResponseWriter, r *http.Request) {
+func (h *LibrarianHandler) deleteLibrarian(w http.ResponseWriter, r *http.Request) {
 	params := httprouter.ParamsFromContext(r.Context())
 	id := params.ByName("pycid")
 
