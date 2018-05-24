@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="./fonts.css">
+    <link rel="import" href="./elements/progress.html">
+    <link rel="import" href="./elements/progress-container.html">
+    <title>Librarian Check-In System</title>
+    <% if (production) { %>
+    <link rel="stylesheet" href="./renderer.css">
+    <% } %>
+</head>
+<body>
+<div id="app">
+    <progress-container>
+        <progress-circle></progress-circle>
+    </progress-container>
+</div>
+<script src="./renderer.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "presets": [["env", {
+    "modules": false,
+    "targets": {
+      "chrome": "59"
+    }
+  }]],
+  "plugins": [
+    "syntax-dynamic-import",
+    "transform-object-rest-spread"
+  ]
+}
