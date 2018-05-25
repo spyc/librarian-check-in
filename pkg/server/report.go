@@ -24,17 +24,12 @@ type overviewRow struct {
 	FailTime float64 `json:"fail_time"`
 }
 
-type fulfilledRow struct {
-	librarian *modals.Librarian
-	record    *modals.Attendance
-}
-
 type ReportHandler struct {
 	RecordStore    *modals.AttendanceStore `inject:""`
 	LibrarianStore *modals.LibrarianStore  `inject:""`
 	Logger         *logrus.Entry           `inject:"api logger"`
+	Handler        *AuthMiddleware         `inject:""`
 
-	router    *httprouter.Router
 	bootstrap sync.Once
 }
 
@@ -42,12 +37,12 @@ func (h *ReportHandler) init() {
 	router := httprouter.New()
 	router.HandlerFunc("GET", "/report/personal", h.personalReport)
 	router.HandlerFunc("GET", "/report/overview", h.overviewReport)
-	h.router = router
+	h.Handler.Handler = router
 }
 
 func (h *ReportHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.bootstrap.Do(h.init)
-	h.router.ServeHTTP(w, r)
+	h.Handler.ServeHTTP(w, r)
 }
 
 func (h *ReportHandler) personalReport(w http.ResponseWriter, r *http.Request) {
@@ -144,19 +139,23 @@ func (h *ReportHandler) overviewReport(w http.ResponseWriter, r *http.Request) {
 
 	for _, record := range records {
 		if startTime.Before(*record.CheckIn) && endTime.After(*record.CheckIn) {
-			l, err := h.LibrarianStore.GetByID(record.Pycid)
-			if err != nil {
-				w.WriteHeader(http.StatusNotFound)
-				return
-			}
-			row, found := fulfilled[l.Pycid]
+			row, found := fulfilled[record.Pycid]
 			if !found {
 				row = overviewRow{
-					Pycid:    l.Pycid,
-					Name:     l.Name,
+					Pycid:    record.Pycid,
 					GoodTime: 0,
 					FailTime: 0,
 					FairTime: 0,
+				}
+
+				l, err := h.LibrarianStore.GetByID(record.Pycid)
+				if err != nil {
+					w.WriteHeader(http.StatusNotFound)
+					return
+				}
+
+				if l != nil {
+					row.Name = l.Name
 				}
 			}
 
@@ -173,7 +172,7 @@ func (h *ReportHandler) overviewReport(w http.ResponseWriter, r *http.Request) {
 				break
 			}
 
-			fulfilled[l.Pycid] = row
+			fulfilled[record.Pycid] = row
 		}
 	}
 

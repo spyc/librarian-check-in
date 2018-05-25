@@ -26,5 +26,6 @@ func injectLogger(graph *inject.Graph) error {
 		&inject.Object{Value: logger.WithField("source", "api"), Name: "api logger"},
 		&inject.Object{Value: logger.WithField("source", "checkin"), Name: "checkin logger"},
 		&inject.Object{Value: logger.WithField("source", "librarian"), Name: "librarian logger"},
+		&inject.Object{Value: logger.WithField("source", "auth"), Name: "auth logger"},
 	)
 }

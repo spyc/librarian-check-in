@@ -19,7 +19,7 @@ func init() {
 		panic(err)
 	}
 
-	for _, fn := range []injectFunc{injectLogger} {
+	for _, fn := range []injectFunc{injectLogger, injectSessionStore} {
 		if err := fn(&graph); err != nil {
 			logger.Error(err)
 			panic(err)

@@ -16,6 +16,7 @@ type ApiHandler struct {
 	CheckInHandler   *CheckInHandler        `inject:""`
 	LibrarianHandler *LibrarianHandler      `inject:""`
 	ReportHandler    *ReportHandler         `inject:""`
+	AuthHandler      *AuthHandler           `inject:""`
 
 	handler   http.Handler
 	bootstrap sync.Once
@@ -33,6 +34,8 @@ func (h *ApiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		mux.Handle("/librarian/", h.LibrarianHandler)
 
 		mux.Handle("/report/", h.ReportHandler)
+
+		mux.Handle("/auth", h.AuthHandler)
 
 		handler := handlers.CombinedLoggingHandler(h.Logger.Writer(), mux)
 		handler = handlers.RecoveryHandler(

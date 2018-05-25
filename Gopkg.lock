@@ -2,6 +2,16 @@
 
 
 [[projects]]
+  name = "github.com/boombuler/barcode"
+  packages = [
+    ".",
+    "qr",
+    "utils"
+  ]
+  revision = "3cfea5ab600ae37946be2b763b8ec2c1cf2d272d"
+  version = "v1.0.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/facebookgo/inject"
   packages = ["."]
@@ -36,10 +46,28 @@
   version = "v1.1.0"
 
 [[projects]]
+  name = "github.com/gorilla/context"
+  packages = ["."]
+  revision = "08b5f424b9271eedf6f9f0ce86cb9396ed337a42"
+  version = "v1.1.1"
+
+[[projects]]
   name = "github.com/gorilla/handlers"
   packages = ["."]
   revision = "90663712d74cb411cbef281bc1e08c19d1a76145"
   version = "v1.3.0"
+
+[[projects]]
+  name = "github.com/gorilla/securecookie"
+  packages = ["."]
+  revision = "e59506cc896acb7f7bf732d4fdf5e25f7ccd8983"
+  version = "v1.1.1"
+
+[[projects]]
+  name = "github.com/gorilla/sessions"
+  packages = ["."]
+  revision = "ca9ada44574153444b00d3fd9c8559e4cc95f896"
+  version = "v1.1"
 
 [[projects]]
   branch = "master"
@@ -57,6 +85,16 @@
     "jwriter"
   ]
   revision = "8b799c424f57fa123fc63a99d6383bc6e4c02578"
+
+[[projects]]
+  name = "github.com/pquerna/otp"
+  packages = [
+    ".",
+    "hotp",
+    "totp"
+  ]
+  revision = "b7b89250c468c06871d3837bee02e2d5c155ae19"
+  version = "v1.0.0"
 
 [[projects]]
   name = "github.com/sirupsen/logrus"
@@ -82,6 +120,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b7fee2dd093b070a4af96249630c0a3eb5bed1005c8cf47c4b39cb52705c44eb"
+  inputs-digest = "59ca8abbcd862732b53425fadf2dd633ee497b56974b87e52da8444ce227298b"
   solver-name = "gps-cdcl"
   solver-version = 1

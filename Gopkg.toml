@@ -56,3 +56,11 @@
 [[constraint]]
   branch = "master"
   name = "github.com/julienschmidt/httprouter"
+
+[[constraint]]
+  name = "github.com/gorilla/sessions"
+  version = "1.1.0"
+
+[[constraint]]
+  name = "github.com/pquerna/otp"
+  version = "1.0.0"

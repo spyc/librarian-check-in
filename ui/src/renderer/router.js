@@ -11,6 +11,7 @@ export default function createRouter() {
       { name: 'checkin', path: '/checkin', component: () => import('./page/CheckIn.vue') },
       { name: 'librarian', path: '/librarian', component: () => import('./page/librarian/Page.vue') },
       { name: 'report', path: '/report', component: () => import('./page/report/Page.vue') },
+      { name: 'auth', path: '/auth', component: () => import('./page/Auth.vue') },
     ],
   });
 }

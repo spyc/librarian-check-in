@@ -14,14 +14,14 @@ import (
 type LibrarianHandler struct {
 	LibrarianStore *modals.LibrarianStore `inject:""`
 	Logger         *logrus.Entry          `inject:"api logger"`
+	Handler        *AuthMiddleware        `inject:""`
 
-	handler   http.Handler
 	bootstrap sync.Once
 }
 
 func (h *LibrarianHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.bootstrap.Do(h.init)
-	h.handler.ServeHTTP(w, r)
+	h.Handler.ServeHTTP(w, r)
 }
 
 func (h *LibrarianHandler) init() {
@@ -30,7 +30,7 @@ func (h *LibrarianHandler) init() {
 	router.HandlerFunc("POST", "/librarian", h.addLibrarian)
 	router.HandlerFunc("PUT", "/librarian/:pycid", h.updateLibrarian)
 	router.HandlerFunc("DELETE", "/librarian/:pycid", h.deleteLibrarian)
-	h.handler = router
+	h.Handler.Handler = router
 }
 
 func (h *LibrarianHandler) getLibrarians(w http.ResponseWriter, r *http.Request) {
