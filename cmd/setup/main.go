@@ -4,8 +4,11 @@ import (
 	"os"
 	"path"
 
+	"crypto/rand"
+	"encoding/base32"
 	"io/ioutil"
 	"library.pyc.edu.hk/attendance/pkg/modals"
+	"strings"
 )
 
 func main() {
@@ -42,5 +45,15 @@ func main() {
 		if err := ioutil.WriteFile(path.Join(dataPath, modals.AttendanceFile), content, 0644); err != nil {
 			panic(err)
 		}
+	}
+
+	{
+		secret := make([]byte, 10)
+		rand.Read(secret)
+		secretString := strings.TrimRight(base32.StdEncoding.EncodeToString(secret), "=")
+		if err := ioutil.WriteFile(path.Join(dataPath, "token"), []byte(secretString), 0644); err != nil {
+			panic(err)
+		}
+
 	}
 }
